@@ -30,18 +30,39 @@ git rm cmd-git.txt
 git rm --cached cmd-git.txt  -->quitar de stage
 
 git commit -m "Commit inicial"
-
+git commit -am "mensaje commit " -->no funciona si el archivo es nuevo  #### Recomendado ###
 
 git log cmd-git.txt  --> historia del archivo
+git log --stat       -->Mostrar cambios
 git show  cmd-git.txt  --> Mostrar cambios en el archivo.
 
 git dif commit1 commit2   -->comparar cambios entre commits
 
-
-=============  git =================
+git checkout master -->desplazarse en las versiones.
 
 git reset codigocommit --hard  --> todo vuelve al estado anterior
 git reset codigocommit --soft  --> vuelve al estado anterior y lo que esta en el stage sigue ahi
+
+=============  GIT BRANCH =================
+
+git branch hotfix
+git checkout hotfix
+
+git branch
+
+
+git merge hotfix
+git merge master
+
+
+=============  GIT REMOTO =================
+git clone url --> trae master al directorio local y al repositorio local
+
+git fetch   --> lo trae al repositorio local
+git merge   --> lo trae del repositorio local a mi directorio de trabajo.
+
+git pull    --> copia al repositorio local y al directorio de trabajo
+git push 
 
 
 
