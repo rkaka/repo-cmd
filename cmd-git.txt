@@ -1,9 +1,25 @@
-============= Comandos Git =================
+============= Comandos  =================
 
 pwd
 alt + 126 -> ~
 cd
 ls -al    -> para ver archivos ocultos
-
+code 
 
 ============= Comandos Git =================
+
+git init   --> En la ruta que quiero iniciar un repositorio.
+git status --> Estado del repositorio
+
+git add cmd-git.txt  --> pasar a stage
+git rm cmd-git.txt
+git rm --cached cmd-git.txt
+
+git commit -m "Commit inicial"
+
+
+
+git config --list   --> configuraciones de git
+git config --list --show-origin --> Donde estan las configuraciones guardadas
+
+git config --global user.name "name_user"
