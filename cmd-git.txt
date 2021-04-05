@@ -6,6 +6,8 @@ cd
 ls -al    -> para ver archivos ocultos
 code 
 q --> para salir
+
+(Editor Vim)
 ============= Comandos Git config =================
 
 git config --list   --> configuraciones de git
@@ -14,7 +16,7 @@ git config --list --show-origin --> Donde estan las configuraciones guardadas
 git config --global user.name "name_user"
 
 
-============= Comandos Git =================
+============= Comandos Git basicos =================
 
 
 git init   --> En la ruta que quiero iniciar un repositorio.
@@ -33,11 +35,13 @@ git commit -m "Commit inicial"
 git log cmd-git.txt  --> historia del archivo
 git show  cmd-git.txt  --> Mostrar cambios en el archivo.
 
- 
+git dif commit1 commit2   -->comparar cambios entre commits
 
 
+=============  git =================
 
-
+git reset codigocommit --hard  --> todo vuelve al estado anterior
+git reset codigocommit --soft  --> vuelve al estado anterior y lo que esta en el stage sigue ahi
 
 
 

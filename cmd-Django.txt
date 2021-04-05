@@ -1,0 +1,50 @@
+Chuleta de comandos en Windows 10
+# Consultar la versión de Python por defecto
+python -V
+
+# Crear entorno Conda vacío con Python 3.7
+conda create -n django2 python==3.7 sqlite==3.25.3
+
+# Activar el entorno virtual
+activate django2
+
+# Listar los paquetes instalados en el entorno virtual
+(django2) pip list
+
+# Instalar Django en el entorno virtual
+(django2) pip install django  # se puede instalar cualquier versión con django==2.0.2 o la que sea
+
+# Crear un proyecto de Django
+(django2) django-admin startproject proyecto
+
+# Desinstalar Django del entorno virtual
+(django2) pip uninstall django
+
+# Desactivar el entorno virtual
+(django2) deactivate
+
+# Para manejar imagenes
+pip install Pillow 
+pip install pylint-django
+====================================================
+#Correr el servidor
+(django2) python manage.py runserver
+
+#Migrar la base de datos
+(django2) python manage.py migrate
+
+#Migrar la base de datos
+(django2) python manage.py startapp core
+
+================Migraciones====================================
+#Crear Migraciones de portfolio
+python manage.py makemigrations portfolio
+
+#Migrar a la base de datos
+(django2) python manage.py migrate portfolio
+
+================Admin====================================
+#Crear super usuario
+(django2) python manage.py createsuperuser  
+-- ricardo 12345678
+
