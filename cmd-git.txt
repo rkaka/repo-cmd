@@ -5,21 +5,39 @@ alt + 126 -> ~
 cd
 ls -al    -> para ver archivos ocultos
 code 
-
-============= Comandos Git =================
-
-git init   --> En la ruta que quiero iniciar un repositorio.
-git status --> Estado del repositorio
-
-git add cmd-git.txt  --> pasar a stage
-git rm cmd-git.txt
-git rm --cached cmd-git.txt
-
-git commit -m "Commit inicial"
-
-
+q --> para salir
+============= Comandos Git config =================
 
 git config --list   --> configuraciones de git
 git config --list --show-origin --> Donde estan las configuraciones guardadas
 
 git config --global user.name "name_user"
+
+
+============= Comandos Git =================
+
+
+git init   --> En la ruta que quiero iniciar un repositorio.
+git status --> Estado del repositorio
+
+git add cmd-git.txt  --> pasar a stage
+git add . --> pasar a stage todos los archivos que tengo en la ruta en la que estoy.
+
+
+git rm cmd-git.txt
+git rm --cached cmd-git.txt  -->quitar de stage
+
+git commit -m "Commit inicial"
+
+
+git log cmd-git.txt  --> historia del archivo
+git show  cmd-git.txt  --> Mostrar cambios en el archivo.
+
+ 
+
+
+
+
+
+
+
