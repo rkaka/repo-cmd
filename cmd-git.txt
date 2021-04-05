@@ -1,0 +1,9 @@
+============= Comandos Git =================
+
+pwd
+alt + 126 -> ~
+cd
+ls -al    -> para ver archivos ocultos
+
+
+============= Comandos Git =================
