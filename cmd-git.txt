@@ -62,7 +62,7 @@ git fetch   --> lo trae al repositorio local
 git merge   --> lo trae del repositorio local a mi directorio de trabajo.
 
 git pull    --> copia al repositorio local y al directorio de trabajo
-git push 
+git push --master
 
 
 
