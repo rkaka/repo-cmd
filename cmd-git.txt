@@ -64,6 +64,48 @@ git merge   --> lo trae del repositorio local a mi directorio de trabajo.
 git pull    --> copia al repositorio local y al directorio de trabajo
 git push --master
 
---conflicto hotfix
+
+=============  GITHUB =================
+
+git remote add origin url--https-de-git
+
+git remote
+git remote -v
+
+git push origin master
+
+git pull origin master
+
+git pull origin main --allow-unrelated-histories
+
+
+============ solución al main ============
+
+git checkout master
+	git branch -m main  --> cambiarle el nombre a la rama master por main
+
+git config --global init.defaultBranch main
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
