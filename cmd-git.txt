@@ -8,6 +8,8 @@ code
 q --> para salir
 
 (Editor Vim)
+
+gitk -->interfaz git
 ============= Comandos Git config =================
 
 git config --list   --> configuraciones de git
@@ -54,6 +56,7 @@ git branch
 git merge hotfix
 git merge master
 
+git show-branch --all
 
 =============  GIT REMOTO =================
 git clone url --> trae master al directorio local y al repositorio local
@@ -78,6 +81,9 @@ git pull origin master
 
 git pull origin main --allow-unrelated-histories
 
+---rutina ---
+git pull origin main 
+	
 
 ============ solución al main ============
 
@@ -109,8 +115,12 @@ alias arbolito="git log --all --graph --decorate --oneline"
 
 git tag -a v0.1 -m "resultado de las primeras clases del curso" 8058cd8  --> crear un tag
 git tag   --> lista de los tags
+
+git tag -d dormido -->borrar el tag dormido
+
 git show-ref --tags
 
+git push origin --tags
 
 
 
