@@ -124,6 +124,11 @@ git show-ref --tags
 git push origin --tags
 
 
+================== otros ===================================
+
+echo "Prueba de mi web" > index.html    --> para crear el archivo desde la consola
+vim index.html --> para crearlo con vim 
+
 
 
 
