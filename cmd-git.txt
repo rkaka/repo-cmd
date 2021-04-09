@@ -56,6 +56,7 @@ git branch
 git merge hotfix
 git merge master
 
+git show-branch
 git show-branch --all
 
 =============  GIT REMOTO =================
@@ -121,6 +122,7 @@ git tag -d dormido -->borrar el tag dormido
 git show-ref --tags
 
 git push origin --tags
+
 
 
 
