@@ -51,7 +51,8 @@ git branch hotfix
 git checkout hotfix
 
 git branch
-
+git branch -r -->ramas remotas
+git branch -a
 
 git merge hotfix
 git merge master
@@ -129,14 +130,52 @@ git push origin --tags
 echo "Prueba de mi web" > index.html    --> para crear el archivo desde la consola
 vim index.html --> para crearlo con vim 
 
+============== GIT STASH =============================
+
+git stash 
+git stash list  
+git stash pop
+git stash branch name-rama
+
+================= git clean =============================
 
 
+================= git cherry-pick =============================
+se usa para traer solo los cambios de un commit.
 
 
+================= git amend =============================
+git add nombre-archivo
+git commit --amend
+
+================= git REFLOJ =============================
+--borras una rama
+git reflog 
+git reset --HARD POSICION-DEL REFLOJ
+
+================= git GREP para busquedas y log =============================
+git grep palabra-buscar
+git grep -n palabra-buscar  -- en que linea
+git grep -c  palabra --cuantas veces
+
+--grep para archivos, log para los commits.
+
+git log -s "palabra-buscar"
 
 
+================= comandos colaborativos =============================
+git shortlog -sn
+git shortlog -sn --all
+git shortlog -sn --all --no-merges
+
+git stats #comando inventado
+git config --global alias.stats "shortlog -sn --all --no-merges"
 
 
+git blame -c nommbre-archivo
+git blame --help -->abre la ayuda para ver que hace el comando
+
+git blame css/estilos.css -L35,53 -c --> quien cambio en estas lineas
 
 
 
