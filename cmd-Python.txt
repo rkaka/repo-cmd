@@ -1,0 +1,127 @@
+================ otros ====================================	
+\'  --> para agregar la commilla 	
+global name_variable   # para usar una variable en la función que esta por fuera de ella.
+
+id('i') --> ubicación en memoria
+
+dir (pais)  --> muestra los métodos del string
+help (myfunction) -->ayuda de las triple comillas de la funcion
+
+pass --> placeholder
+print ('el cliente: {} no se encuentra en la lista'.format(client_name))
+
+sys.exit()  -->import sys
+import copy
+import random -->num aleatorios
+================ Funciones ====================================
+#funciones
+type (1)
+int ('5')
+bool('1')
+================Funcion====================================
+def suma_de_dos_num(x,y):
+	"""Este es un texto de ayuda de como utilizar la funcion"""
+	return x + y
+	
+funcion lambda
+
+================ Strings-cadenas ====================================	
+
+pais = 'Colombia'
+pais[0]
+pais[-1]
+
+len(pais)
+
+in 
+not in
+
+upper 
+lower
+find
+startswith
+endswith
+capitalize
+replace
+
+pais.upper()
+
+------slices ------
+pais [0:3]  --> Col
+pais [::2]  --> 
+pais [:3]  -->Col
+pais [3:]  -->ombia
+
+pais [::-1]  --> aibmoloc
+
+pais [:8:2] --> clmbi -->de dos en dos hasta el 8
+pais [::2] --> clmbi -->de dos en dos hasta el final
+
+------split------
+lista = pais.split(',') --> separador por coma
+
+
+================ for loops ====================================	
+--itera en una secuencia
+
+break    -->rompe la iteracion
+continue -->pasar a la siguiente iteracion
+
+
+for i in range(100):
+	print (i)
+
+================ while loops ====================================	
+--itera mientras una condicion sea verdadera
+-- o en una secuencia.
+
+
+================ Listas ====================================	
+-->las listas son mutables los strings no
+--> se inician con [] o con list
+--> solo puedo usar suma y multiplicacion
+
+countries = ['Mexico', 'Colombia']
+
+global_countries = countries -->si modifico una lista, se modifica la otra.
+
+global_countries = copy.copy(countries) -->De esta manera copio una lista, llamar a la libreria copy.
+
+global_countries = countries[::] -->otra forma de copiar una lista.
+
+global_countries = countries.copy() -->otra forma
+
+suma -->concatena en las listas.
+
+a.append(2) -->agrega
+a.pop()     --> saca de la lista
+a.sort()    --> ordena de menor a mayor
+
+del a [-1]  --> elimina el ultimo elemento
+a.remove ('name') -->elimina sin saber el indice
+
+a = list (range(0,100,2))  
+
+random_number.append (random.randint(0,15))
+order_numbers = sorted(random_numbers)
+
+--------- para enumerar con indice la lista ----
+for idx, client in enumerate (clients):
+	print ('{}: {}'.format(idx, client))
+
+================ Diccionarios ====================================	
+--> keys y values
+--> se inician con {} o con dict
+
+
+
+
+
+
+
+
+
+
+
+
+
