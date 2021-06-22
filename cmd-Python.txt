@@ -13,6 +13,9 @@ print ('el cliente: {} no se encuentra en la lista'.format(client_name))
 sys.exit()  -->import sys
 import copy
 import random -->num aleatorios
+help (a) -->""" comentarios de ayuda"""
+
+import this   --> zen de python
 ================ Funciones ====================================
 #funciones
 type (1)
@@ -23,7 +26,10 @@ def suma_de_dos_num(x,y):
 	"""Este es un texto de ayuda de como utilizar la funcion"""
 	return x + y
 	
-funcion lambda
+funcion lambda o anónima
+lambda argumentos: expresion
+
+
 
 ================ Strings-cadenas ====================================	
 
@@ -87,7 +93,7 @@ global_countries = countries -->si modifico una lista, se modifica la otra.
 
 global_countries = copy.copy(countries) -->De esta manera copio una lista, llamar a la libreria copy.
 
-global_countries = countries[::] -->otra forma de copiar una lista.
+global_countries = countries[::] -->otra forma de copiar, clonar una lista.
 
 global_countries = countries.copy() -->otra forma
 
@@ -113,15 +119,174 @@ for idx, client in enumerate (clients):
 --> keys y values
 --> se inician con {} o con dict
 
+rae.get ('helado', None)  -->para que no de error y de none cuando no encuentre nada
+rae.keys()
+rae.values()
+rae.items()  
+
+for key, values in rae.items():
+	print(key,values)
+
+
+
+================ tuplas y conjuntos ====================================	
+--> tuplas son similares a las listas pero inmutables.
+--> para regresar mas de un valor en una función.
+
+-->conjuntos: sets
+--> no pueden existir elemnos duplicados y son mutables.
+--> set y {} para declararlos
+--> no tienen indice  porque no tienen un orden implícito.
+
+
+--------------
+
+>>> A = {1, 2, 3}	# conjunto A
+>>> B = {3, 4 ,5}	# conjunto B
+>>> A | B		#unión
+{1, 2, 3, 4, 5}
+>>> A & B	# intersección
+{3}
+>>> A - B		# diferencia entre A y B
+{1, 2}
+>>> B - A		# diferencia entre B y A
+{4, 5}
+================ Comprehensions ====================================	
+lista_numeros = list(range(100))
+lista_numeros
+pares = [num for num in lista_numero if num % 2 == 0]
+pares
+dobles = [i * 2 for i in lista_numeros]
+dobles
+
+a =[1,2,3] 
+b = [a,b,c] 
+c = {uid: a for uid, a in zip (a,b)}
+
+List comprehensions
+[element for element in element_list if element_meets_condition]
+Dictionary comprehensions
+{key: element for element in element_list if element_meets_condition}
+Sets comprehensions
+{element for element in element_list if elements_meets_condition}
+-------
+import random
+random_numbers=[]
+for i in range (10):
+	random_numbers.append(random.randint (1,3))
+
+random_numbers
+no_repeated = {number for number in random_numbers}	
+---------
+
+if __name__ == '__main__':
+	data = [random.randint(0,100) for i in range (10)]
+	
+	data.sort()
+	
+	print (data)
+
+================ zip ====================================	
+
+>>> x = [1, 2, 3]
+>>> y = [4, 5, 6]
+>>> zipped = zip(x, y)
+>>> list(zipped)
+[(1, 4), (2, 5), (3, 6)]
+
+
+================ Archivos ====================================	
 
 
 
 
 
 
+================ PROGRAMACION ORIENTADA A OBJETOS POO ====================================	
 
 
+================  Scopes and namespaces ====================================	
+--names
+def echo(value):
+    return value
+
+a = echo
+
+a(‘Billy’)
+
+-->scope: Campo de aplicación u alcance.
 
 
+================ Recursividad ====================================	
+def fibonacci(n):
+    if n == 0 or n == 1:
+        return 1
+
+    return fibonacci(n - 1) + fibonacci(n - 2)
 
 
+================ funcion lambda =======================
+
+sumar = lambda x, y: x + y
+
+>>> sumar(2, 3)
+5
+
+==================== Función de order superior=====================
+
+Es una función que recibe como parámetro a otra función.
+
+FILTER MAP REDUCE
+
+# filter.
+my_list = [1,4,5, 6, 9, 13, 21]
+
+--sacar los impares
+
+-->con list comprehensions 
+odd = [i for i in my_list if i %2 !=0]
+
+--> con filter
+odd = list(filter(lambda x: x%2 !=0, mylist))
+
+print(odd) 
+
+----------------------------------------------
+#map 
+my_list = [1,2,3,4,5]
+
+--sacar los cuadrados de los números.
+
+-->con list comprehensions 
+squares = [i*i for i in my_list ]
+
+--> con filter
+squares = list(map(lambda x: x**2, mylist))
+
+----------------------------------------------
+#reduce
+my_list = [2,2,2,2,2]
+
+--sacar la multiplicacion de los elementos de la lista.
+
+from functools import reduce
+
+all_multiplied = reduce (lambda a,b: a*b, my_list)
+
+ 
+
+
+========= OTROS ================================
+yield 
+funcion lambda  --> funciones anonimas
+collections
+comprehensions
+
+decoradores
+Scopes and namespaces
+
+assert
+
+try 
+except
+finnaly

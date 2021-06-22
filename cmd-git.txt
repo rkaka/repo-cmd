@@ -69,6 +69,8 @@ git merge   --> lo trae del repositorio local a mi directorio de trabajo.
 git pull    --> copia al repositorio local y al directorio de trabajo
 git push --master
 
+git remote
+git remote -v
 
 =============  GITHUB =================
 
@@ -103,7 +105,7 @@ Llave pública : te la envío para que la cifres.
 
 
 ssh-keygen -t rsa -b 4096 -C "richardo_rkd"
-
+	
 
 ssh-keygen -t rsa -b 4096 -C "mail-usado-en-github" : para generar una llave publica-privada, "-t" es para elegir el algoritmo, "rsa" es el algoritmo de generación, "-b" para elegir la complejidad, "4096" es la cantidad de digitos de nuestra llave numerica, "-C" tiene que ser en mayuscula, y nuestro email de github (si es que nos vamos a conectar con ese servicio)
 eval $(ssh-agent -s) : comando para hacer correr un verificador de llaves publicas y privadas, "pid" process id, para que el pc identifique el proceso

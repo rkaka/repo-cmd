@@ -1,0 +1,38 @@
+
+
+=========================== Preparación del entorno de trabajo =========================
+#entorno virtual 
+pip install virtualenv
+
+#crear entorno virtual
+virtualenv venv --python=python3.7
+
+#iniciar entorno virtual.
+venv\scripts\activate 
+
+#desactivar 
+deactivate
+
+#instalar flask
+pip install flask
+
+#ver dependencias instaladas.
+pip freeze
+
+#instalar desde requirements.txt -r es recursivamente.
+pip install -r requirements.txt
+
+#variable de entorno de flask
+set FLASK_APP=main.py
+
+#correr el servidor de flask
+flask run
+
+#prender el modo debugging --> permite ver los errores y se refresca
+#automaticamente cuando hay camios el servidor
+set FLASK_DEBUG=1
+
+
+
+=========================== request y response =========================
+
