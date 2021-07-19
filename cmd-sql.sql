@@ -32,6 +32,14 @@ select * from sf_tlger
 order by 2 desc;
 
 truncate table sf_tlger;
+
+---------------------------
+select * from sf_terro
+order by 2 desc
+;
+begin 
+sf_pins_error('prueba');
+end;
 =======================Busca codigo=========================
 
 select * from user_source
@@ -60,6 +68,10 @@ astrogrep -->> programa de busquedas
 
 v_Error  varchar2(500);
 
+	--
+	Exception
+		when others then
+			Bloqueo('Error: ' || sqlerrm);
 ======================= crear tabla copia ======================
 --
 create table copia_tabla1 as select * from tabla1; 
@@ -264,14 +276,14 @@ TEMOPAGO -- cumplimiento/pago tesoreria --> TE_TMVTE SC_TCTCO--SC_TMVCO
 
 
 =============== agregar columna ======================
- alter table fd_toper add oper_orig varchar2 (1) ,
- ALTER TABLE  fd_tmvca ADD mvca_mone         varchar2(6) ;
+alter table fd_toper add oper_orig varchar2 (1) ,
+ALTER TABLE  fd_tmvca ADD mvca_mone         varchar2(6) ;
 ALTER TABLE  fd_tmvca ADD mvca_vmone_apl    number(23,2);
 --
 
 
 
-=============== EN key-next-item======================
+=============== EN key-next-item kni======================
 -- 
 Enter;
 if form_failure then
@@ -281,3 +293,150 @@ End if;
 go_block('SF_TFOND');
 execute_Query;
 --
+=============== EN when-VALIDATE-item wvi======================
+ If (:mayo_multimoneda not in ('S', 'N'))then
+ 	bloqueo('Valor No valido ');
+ end if;
+
+========= radio button con distinto where ===========
+
+if :ctrl.radio_exitosos = 'T' then	
+	Set_block_Property ('sf_tctop',default_where,'ctop_tesoreriasn is not null and ctop_fecha between :fecha_desde and :fecha_hasta');
+elsif :ctrl.radio_exitosos = 'N' then
+	Set_block_Property ('sf_tctop',default_where,'ctop_tesoreriasn=''N''');
+end if;
+go_block('SF_TCTOP');
+execute_query;
+
+SYSTEM.CURSOR_ITEM
+
+
+
+========= atributocampo pre-record===========
++
+
+========= ORACLE-FORMS ===========
+Built-Ins de Navigación
+Funcionamiento
+GO_FORM
+Navega a un Form independiente en una aplicación de múltiples Forms (Formularios).
+GO_BLOCK/ITEM/RECORD
+Navega al Bloque, Registro o Item especificado.
+NEXT_BLOCK/ITEM/KEY
+Se desplaza al siguiente Bloque, Item o Item de clave primaria que sea navegable.
+NEXT/PREVIOUS_RECORD
+Se desplaza al primer item navegable del siguiente (NEXT) o anterior (PREVIOUS) registro,
+NEXT_SET
+Extrae otro conjunto de registros de la base de datos y luego navega al primer registro extraído.
+UP, DOWN
+Navega a la instancia del item actual en el anterior/posterior registro.
+PREVIOUS_BLOCK/ITEM
+Navega al anterior bloque o item navegable.
+SCROLL_UP/DOWN
+Desplaza el bloque de manera que se muestren los primeros (UP) o últimos (DOWN) registros.
+
+
+
+SET_FORM_PROPERTY(FIRST_NAVIGATION_BLOCK, 'ORDER_ITEMS');
+/*Esta sentencia establecería el ORDER_ITEMS como el primer bloque de navegación del Form en cuestión, por ende al iniciar el módulo form el cursor se colocaría en el primer item navegable de ese bloque.*/
+SET_BLOCK_PROPERTY('ORDERS', ORDER_BY, 'CUSTOMER_ID');
+/*Esta sentencia establecería la propiedad ORDER BY CLAUSE con la columna CUSTOMER_ID. De esta forma una posterior consulta ordenaría los resultados por esta columna en forma ascendente.*/
+SET_RECORD_PROPERTY(3, 'ORDER_ITEMS', STATUS, QUERY_STATUS);
+/*Esta sentencia marca el tercer registro en el bloque ORDER_ITEMS como si fuera un registro consultado.*/
+SET_ITEM_PROPERTY('CONTROL.stock_button', ICON_NAME, ’stock’);
+/*Esta sentencia especifica el archivo 'stock' como el icono asociado con un Botón stock_button, dicho botón debe tener la propiedad Iconic establecida en SÍ*/
+
+
+========= CONSTRAINTS  ===========
+
+-- 
+-- Non Foreign Key Constraints for Table AF_TMYCO 
+-- 
+ALTER TABLE AF_TMYCO ADD (
+  CONSTRAINT CH_AF_TMYCO_CLASE CHECK (
+ myco_clase IN ('AI','DP','AD','CH') ));
+
+-- 
+-- Foreign Key Constraints for Table AF_TMYCO 
+-- 
+ALTER TABLE AF_TMYCO ADD (
+  CONSTRAINT FK_AF_TMYCO_AF_TAFCO FOREIGN KEY (MYCO_AFDV, MYCO_AFCO) 
+    REFERENCES AF_TAFCO (AFCO_AFDV,AFCO_AFCO));
+
+
+ALTER TABLE table_name
+DISABLE CONSTRAINT constraint_name;
+
+ALTER TABLE supplier
+DISABLE CONSTRAINT supplier_unique;
+
+
+
+================= crear tablas =========================
+
+--
+-- SF_TCGPL  (Table)
+--
+/**********************************************************************************/
+Prompt
+Prompt Creando tabla SF_TCCAE
+Prompt
+/**********************************************************************************/
+
+CREATE TABLE SF_TCGPL
+(
+CGPL_CGPL     NUMBER(8) CONSTRAINT NN_SF_TCGPL_CGPL NOT NULL,
+CGPL_FECHA    DATE CONSTRAINT NN_SF_TCGPL_FECHA NOT NULL,
+CGPL_NROREG   NUMBER(8) CONSTRAINT NN_SF_TCGPL_NROREG NOT NULL,
+CGPL_ESTA     VARCHAR2(1 BYTE) CONSTRAINT NN_SF_TCGPL_ESTA NOT NULL,
+CGPL_FECARCH  DATE CONSTRAINT NN_SF_TCGPL_FECARCH NOT NULL,
+CGPL_FECCRE   DATE CONSTRAINT NN_SF_TCGPL_FECCRE NOT NULL,
+CGPL_USUA     VARCHAR2(30 BYTE) CONSTRAINT NN_SF_TCGPL_USUA NOT NULL,
+MONE_FECCRE  DATE                             DEFAULT sysdate,
+MONE_USUA    VARCHAR2(20 BYTE)                DEFAULT user
+)
+TABLESPACE TS_DSFI
+LOGGING
+NOCOMPRESS
+NOCACHE
+NOPARALLEL
+MONITORING;
+
+====================================================
+list_values;
+do_key('next_field');
+
+=================wvi para lista de valores ============
+declare
+  v_moneda  varchar2 (3);
+--  
+Begin
+--	
+select etmo_mone 
+into v_moneda
+from ge_tetmo
+where etmo_etct = :ctrl_etct
+and  etmo_mone = :ctrl_moneda;
+--
+  Exception
+    when no_data_found then
+      Bloqueo ('Moneda NO EXISTE para la estructura...');
+    when others then
+      Bloqueo (' ERROR : '||sqlerrm);
+End;
+
+======================== Generar EXCEL POI =========================
+
+
+#EN EL BOTON AGREGAR
+llama_ventana_excel;
+
+#AGREGAR 
+BLOQUE PLANO
+CANVAS PLANO
+WINDOWS PLANO
+
+P.U
+llama_ventana_excel
+GENERA_EXCEL_POI
+

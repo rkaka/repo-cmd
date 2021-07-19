@@ -14,7 +14,7 @@ activate django2
 # Instalar Django en el entorno virtual
 (django2) pip install django  # se puede instalar cualquier versión con django==2.0.2 o la que sea
 
-# Crear un proyecto de Django
+# Crear un proyecto de Django  -->en la carpeta donde lo vayas a crear
 (django2) django-admin startproject proyecto
 
 # Desinstalar Django del entorno virtual
@@ -50,6 +50,7 @@ python manage.py makemigrations portfolio
 
 
 
+
 ================ PIP    ====================================
 pip install
 pip install virtual env
@@ -66,5 +67,83 @@ pip install pandas
 
 
 
+
+
+
+================ tienda online    ====================================
+
+#crea el proyecto
+djando-admin startproject tiendaonline
+
+#en la ruta del proyecto crear la app
+python manage.py startapp gestionPedidos
+
+#chequeo de la app para ver si esta bien
+python manage.py check gestionPedidos
+
+#haz las migraciones
+python manage.py makemigrations
+
+#genere el sql
+python manage.py sqlmigrate gestionPedidos 0001
+
+#realiza la migración, crea las tablas.
+python manage.py migrate
+
+
+===================base de datos ==========================
+
+python manage.py shell
+from gestionPedidos.models import Articulos
+art = Articulos (nombre='mesa', seccion='confeccion', precio=75 )
+art.save()
+
+#insert
+art = Articulos.objects.create (nombre='mesa', seccion='confeccion', precio=75 )
+
+#update
+art.precio=95
+art.save()
+
+#delete
+art = Articulos.objects.get (id=1)
+art.delete()
+
+#traer todo lo de la tabla
+Lista = Articulos.objects.all()
+
+#obtener el query
+Lista.query.__str__()
+
+
+#librerira para postgress
+pip install psycopg2
+postgres
+123456
+
+
+#where trae la consulta
+Articulos.objects.filter (id=1)
+
+#si cambio el modelo debo realizar las migraciones
+python manage.py migrate
+
+
+#para mayor y menor
+Articulos.objects.filter (precio__gte=100)
+Articulos.objects.filter (precio__lte=100)
+Articulos.objects.filter (precio__range(10,150)
+Articulos.objects.filter (precio__range(10,150).order_by('precio')
+Articulos.objects.filter (precio__range(10,150).order_by('-precio')
+
+
+Articulos.objects.filter (precio__range(10,150).order_by('-precio')
+
+=================== admin ==========================
+#Crear super usuario
+python manage.py createsuperuser  
+kk
+kk@kk.com
+123456
 
 

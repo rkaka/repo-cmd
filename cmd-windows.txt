@@ -1,0 +1,15 @@
+
+
+================comandos consola windows ========================
+
+arp 
+
+
+#puertos abiertos
+netstat -a
+
+#puertos abiertos aplicacion
+netstat -a
+
+#encontrar un puerto
+netstat -ao | find "8000"
