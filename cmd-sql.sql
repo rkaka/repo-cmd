@@ -314,6 +314,13 @@ SYSTEM.CURSOR_ITEM
 
 ========= atributocampo pre-record===========
 +
+nota(':num_dias'||:num_dias);
+if :num_dias is null then
+	set_item_property('PRFN_TPMV', enabled, property_false);
+else 
+	set_item_property('PRFN_TPMV', enabled, property_true);
+	set_item_property('PRFN_TPMV', update_allowed, property_true);
+end if;
 
 ========= ORACLE-FORMS ===========
 Built-Ins de Navigación
@@ -440,3 +447,123 @@ P.U
 llama_ventana_excel
 GENERA_EXCEL_POI
 
+
+======================== recorrer un bloque =========================
+	go_block('sf_tctop');
+	first_record;	
+	loop
+		--
+		if demo_check = 'S' then 
+		sf_tmasn.procesa_opercajas(trunc(sysdate), :ctop_fond, :ctop_ctop, 'M', 'sfmooptin' );
+		end if;
+		--
+	exit when :system.last_record = 'TRUE';
+	next_record;  
+		--
+	end loop; 
+	
+======================== recorrer un check-box =========================	
+declare
+	v_marca varchar2(1);
+begin
+	v_marca := :CHK_TODOS;
+	go_block('sf_vctop_proc_opcj');
+	First_record;	
+	loop
+			go_item('sf_vctop_proc_opcj.demo_check');
+			if :chk_todos = 'S' then 
+				:sf_vctop_proc_opcj.DEMO_CHECK := v_marca;	
+				execute_trigger('WHEN-CHECKBOX-CHANGED'); 			
+			end if;
+	  	exit when :System.Last_Record = 'TRUE';
+	  	next_record;		
+	end loop;
+	synchronize;
+	first_record;
+end;
+
+declare
+	v_marca varchar2(1);
+begin
+	v_marca := :CHK_TODOS;
+	go_block('sf_tgrim');
+	First_record;	
+	loop
+			go_item('sf_tgrim.demo_check');
+				:sf_tgrim.DEMO_CHECK := v_marca;	
+  	exit when :System.Last_Record = 'TRUE';
+  	next_record;		
+	end loop;
+	synchronize;
+	first_record;
+end;
+
+
+=============dia habil========================================
+ge_qfnge.Ste_Dia_Habil(v_Fecha_Oper)
+
+select ge_qfnge.Add_DH_a_Fecha(trunc(sysdate),2) from dual;
+
+=============mostrar forma opcj========================================
+-- solic 1305
+--
+Declare
+--
+  pl_id     ParamList;
+  v_Forma   varchar2(150);
+-- 
+Begin
+--
+  If :mvag_ctop is not null then 	
+  	Hide_View   ('detal_movi');
+    Hide_Window ('detal_movi');
+	  v_Forma   := 'siaf/fmx/sfmcopcj';
+	  --
+	  pl_id := Get_Parameter_List('PARAMETROS');
+	  IF NOT Id_Null(pl_id) THEN
+	    Destroy_Parameter_List('PARAMETROS');
+	  END IF;
+	  --
+	  pl_id := Create_Parameter_List('PARAMETROS');	
+	  ADD_PARAMETER(pl_id, 'p_ctop', TEXT_PARAMETER, :mvag_ctop );
+	  CALL_FORM    ( v_Forma, no_hide, no_replace, Query_only, pl_id );
+	End if;
+--  
+End;
+
+
+
+================cursor para insert===================
+Begin
+	--
+	For i in c_grpl_plan loop	
+	  Insert into sf_timex ( imex_imex, imex_fond    , imex_plan  , imex_period )
+	  Values               ( :v_imex  , i.grpl_fond  , i.grpl_plan, i.tmpe_periodo);
+	End loop c_grpl_plan;  
+  --
+  COMMIT_FORM;
+	--  
+exception 
+	when others then	
+			Nota('Error en inserta_sf_timex'||sqlerrm);
+			raise form_trigger_failure;
+End;
+
+=================================================
+PROCEDURE Activa_ITBIS IS --RFC_606
+BEGIN
+		--SET_ITEM_PROPERTY ( 'oper_iva_proporcional.COSTO',ENABLED ,PROPERTY_TRUE);
+	If :FORM_CONTIVA='S' Then
+		SET_ITEM_PROPERTY ( 'oper_iva_proporcional',ENABLED ,PROPERTY_true);
+		SET_ITEM_PROPERTY ( 'oper_iva_proporcional',update_allowed ,PROPERTY_True);
+		--If nvl(:OPER_IVA_PROPORCIONAL,'N')='N' Then
+			:OPER_IVA_PROPORCIONAL:='A';
+	  --End if;
+		Set_Radio_Button_Property('OPER_IVA_PROPORCIONAL','ADELANTAR',ENABLED,PROPERTY_TRUE);
+		Set_Radio_Button_Property('OPER_IVA_PROPORCIONAL','PROPORCION',ENABLED,PROPERTY_TRUE);
+		Set_Radio_Button_Property('OPER_IVA_PROPORCIONAL','COSTO',ENABLED,PROPERTY_FALSE);
+	Else
+		:OPER_IVA_PROPORCIONAL:='C';
+		SET_ITEM_PROPERTY ( 'oper_iva_proporcional',ENABLED ,PROPERTY_false);
+	End if;
+END;
