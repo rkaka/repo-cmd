@@ -567,3 +567,152 @@ BEGIN
 		SET_ITEM_PROPERTY ( 'oper_iva_proporcional',ENABLED ,PROPERTY_false);
 	End if;
 END;
+
+=======================================================
+--ventanas
+ SET_WINDOW_PROPERTY('detal_prov_vig',TITLE,'Detalle Provisiones');
+ GO_BLOCK('sf_tprueba');
+ 
+===========================================================
+  r_dere_IVA    c_dere%RowType;  -- Soli_6932
+  -- 
+	v_form_iva        ge_tformula.form_iva%type;
+	
+	
+	
+	
+==================================================================
+create or replace TRIGGER sc_gmvco_b_ins_upd_segui
+--
+BEFORE INSERT OR UPDATE ON sc_tmvco
+FOR EACH ROW
+--
+BEGIN
+    --
+    IF (UPDATING) THEN
+        --
+        Sf_Pins_Error('arios -> updating sc_gmvco_b_ins_upd_segui'||
+                        'MVCO_CIAS    =' || :new.MVCO_CIAS  
+                        ||'MVCO_TPCO    =' || :new.MVCO_TPCO  
+                        ||'MVCO_NROCOM  =' || :new.MVCO_NROCOM
+                        ||'MVCO_DESCRI  =' || :new.MVCO_DESCRI
+                        ||'MVCO_MAYO ='|| :new.MVCO_MAYO
+                        ||'MVCO_ETCT = '|| :new.MVCO_ETCT
+                        ||'MVCO_FECMOV  =' || :new.MVCO_FECMOV || ' - '||dbms_utility.format_call_stack
+                     );
+        --
+    ELSE
+        --
+        Sf_Pins_Error('arios -> inserting sc_gmvco_b_ins_upd_segui'||
+                        'MVCO_CIAS    =' || :new.MVCO_CIAS  
+                        ||'MVCO_TPCO    =' || :new.MVCO_TPCO  
+                        ||'MVCO_NROCOM  =' || :new.MVCO_NROCOM
+                        ||'MVCO_DESCRI  =' || :new.MVCO_DESCRI
+                        ||'MVCO_MAYO ='|| :new.MVCO_MAYO
+                        ||'MVCO_ETCT = '|| :new.MVCO_ETCT
+                        ||'MVCO_FECMOV  =' || :new.MVCO_FECMOV || ' - '||dbms_utility.format_call_stack
+                     );
+        --
+    END IF;
+    --
+END;	
+	 
+	 
+============= WVI ============================
+	 
+Declare
+	--
+	Cursor c1 Is
+		Select ofic_descri    
+	   	From Sf_tofic
+	   Where ofic_ofic = :v_ofic;
+	--
+	Cursor c2 Is
+		Select usof_estado
+	 	  From sf_tusof
+	   Where usof_usua = :usuario
+	 		 and usof_ofic = :v_ofic;
+	--
+	v_esta 					varchar2(2);	 
+	--	 
+BEGIN
+	--
+  Open c1;
+  Fetch c1 Into  :v_ofic_descri;
+  --
+	If ( c1%notfound ) Then
+		--
+		Close c1;
+		bloqueo('Oficina no existe.');
+		--
+	End if;	
+	--
+  Close c1;
+  
+END;  
+
+==================================================
+
+declare
+
+  cursor c_auxi (p_auxi_nit number) is
+  select auxi_auxi, auxi_tpret,auxi_nit, auxi_descri
+  from ge_tauxil
+  where auxi_nit = p_auxi_nit;
+ -- v_auxi_terc ge_tauxil.auxi_nit%type;
+	v_estado boolean;
+
+begin 
+--	
+	v_estado :=false;
+	--
+WHILE  (v_estado = false)
+LOOP
+	open c_auxi(:prov_terc);
+		fetch c_auxi into :prov_auxi_terc, :ctrl_auxi_tpret, :prov_terc, :ter_descri ;
+			If ( c_auxi%notfound ) Then
+		--
+		Close c_auxi;
+		bloqueo('Tercero no existe.');
+		else  v_estado := true;
+		--
+	End if;	
+	close c_auxi;
+END LOOP;
+
+end;
+
+
+
+if(:prov_total <0) then
+	bloqueo('El valor debe ser positivo');
+end if;
+=================
+declare
+	--
+  cursor c1 (p_tpmv number) is
+	SELECT MOFI_MOFI
+  FROM  FD_TMOFI
+  where mofi_mofi = p_tpmv;
+	--
+	v_estado boolean;
+  
+begin 
+--	
+	v_estado :=false;
+	--
+WHILE  (v_estado = false)
+LOOP
+	open c1(:prov_tpmv);
+		fetch c1 into :prov_tpmv;
+			If ( c1%notfound ) Then
+		--
+		Close c1;
+		bloqueo('Tipo de movimiento no existe.');
+		else  v_estado := true;
+		--
+	End if;	
+	close c1;
+END LOOP;
+--
+end;
