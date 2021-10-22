@@ -7,7 +7,10 @@ ge_pvers ('fdmognds', 'FORMA', 1025);
 end;   
 --  
 pyinstaller --windowed --onefile index2.py
+
+
 ====================seguimientos============================
+nota('seg- ');
 
 sf_pins_error('seg-SFMOOPCJ-PROCESAR'  ||' '||     ||' '||);
 --
@@ -716,3 +719,19 @@ LOOP
 END LOOP;
 --
 end;
+
+============== Configurar Servidor de reportes ======================================
+
+select * from ge_tpara
+where para_para in ('APPT_RPT','SRV_REP_DR','SRVR_RPT');
+
+update ge_tpara set para_descri = 'http://192.168.60.34:9004/reports/rwservlet' where para_para = 'APPT_RPT';	
+update ge_tpara set para_descri = '/app/SIFI/sifi_tmp/' where para_para = 'SRV_REP_DR';	
+update ge_tpara set para_descri = 'rep_wls_reports3_itcs34' where para_para = 'SRVR_RPT';
+
+
+
+============== insert permisos sfmoappl=======================================0
+
+Insert into SF_TUSOP (USOP_USUA,USOP_OPER,USOP_NATU,USOP_TPCTA,USOP_FECCRE,USOP_USUACREA,USOP_FECMOD,USOP_USUAMOD) values ('PROBADOR','AP','N','N',to_date('29/09/14','DD/MM/RR'),'AGUEVARA',null,null);
+Insert into SF_TUSOF (USOF_USUA,USOF_OFIC,USOF_HORA_INI,USOF_HORA_FIN,USOF_ESTADO,USOF_FECCRE,USOF_USUACREA,USOF_FECMOD,USOF_USUAMOD,USOF_PRINSN,USOF_HORAADIC,USOF_TPFECFUT) values ('PROBADOR','1',to_date('01/01/00','DD/MM/RR'),to_date('01/01/00','DD/MM/RR'),'A',to_date('29/09/14','DD/MM/RR'),'AGUEVARA',null,null,'S',null,null);
