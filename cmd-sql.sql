@@ -8,6 +8,20 @@ end;
 --  
 pyinstaller --windowed --onefile index2.py
 
+SELECT DISTINCT name,'linea:'||line||'**',ltrim(text)
+FROM user_source
+WHERE upper(text) LIKE upper('%no ha definido el tipo de com%')
+order by 1; 
+
+============== git ==========================
+git reset --hard HEAD~1 --devolver el ultimo commit antes de hacer push
+
+git cherr-pick #commit    --sube el ultimo commit
+
+C:\Desarrollo\FORMS\bin\frmf2xml.bat C:\KIUWAN\104945\Linea_Base\*.fmb
+
+git grep -n -i "fk_sf_tppro_sf_tprov"
+select * from SYS.ALL_SOURCE where upper(TEXT) like '%ERROR%';
 
 ====================seguimientos============================
 nota('seg- ');
@@ -43,6 +57,11 @@ order by 2 desc
 begin 
 sf_pins_error('prueba');
 end;
+-------------------------------
+update ge_tusuaS
+set usua_stat = 'AC'
+where usua_usua = 'PROBADOR'
+;
 =======================Busca codigo=========================
 
 select * from user_source
@@ -62,7 +81,19 @@ AND UPPER(NAME) IN ('SC_QCTCO','SC_QANUL','SC_QHCAU')
 busqueda en git -->>   git grep "sf_tvlbap"
 
 astrogrep -->> programa de busquedas
+=================================================================
 
+
+declare
+v1 number;
+v2 number;
+v3 number;
+--
+begin
+    GE_QCERT.VReti_No_Grav_Cntg (8293, 829301000045, to_date('01012021','ddmmyyyy'),to_date('31122021','ddmmyyyy'),v1,v2,v3 );
+    dbms_output.put_line('v1'||v1||' v2'||v2||' v3'||v3);
+    
+end;
 =======================exceptions==============================
   exception
     when others then
@@ -190,6 +221,9 @@ select * from ai_tsoli
 where soli_ingeniero in ('RSOLANO')
 and soli_estado NOT IN ('CER','REC','RES');
 ============================funciones=========================================
+ SF_QPLAN.SelTitular(plan_fond, plan_plan) between :d_fdei and :h_fdei 
+:plan_descri := sf_qplan.Descri(:RETR_FOND, :retr_plan );
+:plan_fdei_descri := sf_fideicomitente.SelDescri(:retr_fdei);
 
  sf_qtipo_movimiento.tpmv_proc_esp(i.fondo,'RFTE_RNGE'); --procesos especiales
  SF_QMULTI_OPCION.fondo_pensiones(:fond_fond) = 'N'  -- maneja pensiones
@@ -198,6 +232,17 @@ and soli_estado NOT IN ('CER','REC','RES');
  if SF_QMULTI_OPCION.fondo_pensiones(:ctrl.fond_fond) = 'N' then 
  --
  pi_qfnge.VMone(:mvca.mvca_mone,:cargar.fecarch,'R', 'O', 1 ); --->funcion moneda.
+ 
+v_tpmv_CANC_AJPS  := sf_qtipo_movimiento.tpmv_Proc_Esp( p_Fond, 'CANC_AJPS' ); -- Ajuste Positivo en Cancelación de Plan/Encargo.
+v_tpmv_CANC_AJNG  := sf_qtipo_movimiento.tpmv_Proc_Esp( p_Fond, 'CANC_AJNG' ); -- Ajuste Negativo en Cancelación de Plan/Encargo.
+ ----
+ select plan_plan, plan_descri
+from sf_tplan
+where plan_fond =:fond
+and  SF_QPLAN.SelTitular(plan_fond, plan_plan) between :d_fdei and :h_fdei
+order by plan_plan
+ --
+ decode(fdei_person,'F','J',fdei_person) = decode (:T_PERSON,'T',decode(fdei_person,'F','J',fdei_person), :T_PERSON)
 ============================Exception java=========================================
 	raisedException   ORA_JAVA.JOBJECT; --Yego 
   
@@ -217,7 +262,12 @@ v_identificacion :=	SUBSTR(c_limpa.limpa_fdei,1,3)||'-'||SUBSTR(c_limpa.limpa_fd
 ============================ -fechas- ========================================= 
  select   TO_DATE('01/01/2010 08:00:00', 'DD/MM/YYYY HH24:MI:SS') from dual;
  select  TO_char(sysdate, 'HH24:MI:SS') from dual
+ select to_char(acrr_feccie, 'yyyy') = 2020 from dual;
  
+ 
+SELECT ADD_MONTHS(TO_DATE('25/02/2020','DD/MM/YYYY'),-1) FROM DUAL;
+
+  AND dtmc_FECMOV BETWEEN to_date(:per_desde,'yyyymm') AND last_day(to_date(:per_hasta,'yyyymm'))
 ============================ -type- ========================================= 
 type ty_TCRF is record (
 
@@ -356,7 +406,7 @@ SET_RECORD_PROPERTY(3, 'ORDER_ITEMS', STATUS, QUERY_STATUS);
 SET_ITEM_PROPERTY('CONTROL.stock_button', ICON_NAME, ’stock’);
 /*Esta sentencia especifica el archivo 'stock' como el icono asociado con un Botón stock_button, dicho botón debe tener la propiedad Iconic establecida en SÍ*/
 
-
+SET_BLOCK_PROPERTY('bloque', insert_allowed, property_false);
 ========= CONSTRAINTS  ===========
 
 -- 
@@ -465,7 +515,13 @@ GENERA_EXCEL_POI
 		--
 	end loop; 
 	
+	
+======================== recorrer un check-box =========================		
+ Set_Radio_Button_Property('Proceso', 'Manual', Enabled, Property_True);
+ 	    	  Set_Radio_Button_Property('Proceso', 'Manual', Enabled, Property_True);
+	   	  	Set_Radio_Button_Property('Proceso', 'Distribucion', Enabled, Property_False);
 ======================== recorrer un check-box =========================	
+                        --MARCAR TODOS ---
 declare
 	v_marca varchar2(1);
 begin
@@ -735,3 +791,336 @@ update ge_tpara set para_descri = 'rep_wls_reports3_itcs34' where para_para = 'S
 
 Insert into SF_TUSOP (USOP_USUA,USOP_OPER,USOP_NATU,USOP_TPCTA,USOP_FECCRE,USOP_USUACREA,USOP_FECMOD,USOP_USUAMOD) values ('PROBADOR','AP','N','N',to_date('29/09/14','DD/MM/RR'),'AGUEVARA',null,null);
 Insert into SF_TUSOF (USOF_USUA,USOF_OFIC,USOF_HORA_INI,USOF_HORA_FIN,USOF_ESTADO,USOF_FECCRE,USOF_USUACREA,USOF_FECMOD,USOF_USUAMOD,USOF_PRINSN,USOF_HORAADIC,USOF_TPFECFUT) values ('PROBADOR','1',to_date('01/01/00','DD/MM/RR'),to_date('01/01/00','DD/MM/RR'),'A',to_date('29/09/14','DD/MM/RR'),'AGUEVARA',null,null,'S',null,null);
+
+============== excepciones =======================================
+
+e_error 		exception;
+v_msg_err   varchar2(1300);
+
+if vty_erro.cod_error <> 'OK' then
+	--
+	v_msg_err := vty_erro.msg_error;
+	raise e_error;
+	--
+end if;
+
+exception
+	when e_error then
+		p_error:='Error al traer la secuencia SC_STCRF : '||v_msg_rta;
+	when others then
+		p_error:='Error al Generar el Reporte : genera_informacion : '||sqlerrm;
+		
+		
+=================  type ======================================		
+
+type ty_tcrd is record (
+          tcrd_tcrf            sc_ttcrd.tcrd_tcrf%type     
+         ,tcrd_fond            sc_ttcrd.tcrd_fond%type     
+         ,tcrd_plan            sc_ttcrd.tcrd_plan%type     
+         ,tcrd_trcd            sc_ttcrd.tcrd_trcd%type     
+         ,tcrd_terc            sc_ttcrd.tcrd_terc%type     
+         ,tcrd_pers            sc_ttcrd.tcrd_pers%type     
+         ,tcrd_afil            sc_ttcrd.tcrd_afil%type     
+         ,tcrd_corr_dir        sc_ttcrd.tcrd_corr_dir%type         
+         ,tcrd_corr_tel        sc_ttcrd.tcrd_corr_tel%type         
+         ,tcrd_porc_rtf        sc_ttcrd.tcrd_porc_rtf%type         
+         ,tcrd_ciud            sc_ttcrd.tcrd_ciud%type     
+         ,tcrd_valr_bru        sc_ttcrd.tcrd_valr_bru%type         
+         ,tcrd_plan_rest       sc_ttcrd.tcrd_plan_rest%type         
+         ,tcrd_feccan          sc_ttcrd.tcrd_feccan%type       
+         ,tcrd_dire_cor        sc_ttcrd.tcrd_dire_cor%type         
+         ,tcrd_ciud_cor        sc_ttcrd.tcrd_ciud_cor%type         
+         ,tcrd_porc_rfte       sc_ttcrd.tcrd_porc_rfte%type         
+         ,tcrd_retf            sc_ttcrd.tcrd_retf%type     
+         ,tcrd_rdrt            sc_ttcrd.tcrd_rdrt%type     
+         ,tcrd_rdob            sc_ttcrd.tcrd_rdob%type     
+         ,tcrd_rfrc            sc_ttcrd.tcrd_rfrc%type     
+         ,tcrd_base_grv        sc_ttcrd.tcrd_base_grv%type         
+         );
+		 
+type tb_movimiento_base is table of ty_movimiento_base;		 
+
+=================  radio button======================================		
+
+if :RG_TPFON = 'P' then
+	--
+	Set_Radio_Button_Property('RG_PDF', 'RB_PLANO', Enabled, Property_False);
+	:reporte := 'sfmrcrtf';
+	--	
+elsif :RG_TPFON = 'F' then
+	--
+	Set_Radio_Button_Property('RG_PDF', 'RB_PLANO', Enabled, Property_True);
+	:reporte := 'sccpcrfn';
+	--
+end if;
+
+==============================================================
+decode (sign(acrr_vlrrendbr_dia), -1, 'NEGATIVO', 'POSITIVO')
+
+========================= BLOQUE ANÓNIMO=====================================
+declare
+
+valor number;
+tipo varchar2(10);
+
+begin
+    dbms_output.put_line('Inicio'); 
+    tipo := null;
+    valor := null;
+    if  valor < 0 then 
+        tipo:= 'POSITIVO';
+    elsif valor >0 then 
+        tipo:= 'NEGATIVO';
+    else tipo:= 'prueba';	
+    end if;
+     dbms_output.put_line(tipo); 
+  exception 
+    when others then
+     dbms_output.put_line('Error: ' || sqlerrm); 
+end;    
+
+========================= type =====================================
+
+  type ty_prme is record ( prme_proceso        sc_tprme.prme_proceso%type,
+                           prme_cias           sc_tprme.prme_cias%type,
+                           prme_desde_per      sc_tprme.prme_desde_per%type,
+                           prme_hasta_per      sc_tprme.prme_hasta_per%type,
+                           prme_forma          sc_tprme.prme_forma%type,
+                           prme_feccre         sc_tprme.prme_feccre%type,
+                           prme_origen         sc_tprme.prme_origen%type,    -- 1002 RFC 50109 22/01/2016 lhernandez
+                           prme_origen         sc_tprme.prme_desde_plan%type,   --1003 rsolano
+                           prme_origen         sc_tprme.prme_hasta_plan%type    --1003 rsolano
+                          );
+
+r_datos  c_datos%rowtype;
+============================================================================
+clear screen
+---------
+radio button change
+---------
+if :RG_TPFON = 'P' then
+	--
+	Set_Radio_Button_Property('RG_PDF', 'RB_PLANO', Enabled, Property_False);
+	:reporte := 'sfmrcrtf';
+	--	
+elsif :RG_TPFON = 'F' then
+	--
+	Set_Radio_Button_Property('RG_PDF', 'RB_PLANO', Enabled, Property_True);
+	:reporte := 'sccpcrfn';
+	--
+end if;
+
+============================================================================
+----- arrays
+============================================================================
+declare
+   type array_t is varray(3) of varchar2(10);
+   array array_t := array_t(); -- Initialise it
+begin
+   for i in 1..3 loop
+      array.extend(); -- Extend it
+      array(i) := 'x';
+   end loop;
+end;
+
+
+
+
+===========TRIFASICA=================================================================
+select movi_fecmov, movi_nromov, movi_tpmv, movi_valor , 
+       oimv_opin, oimv_valor, oimv_vcapi, oimv_vrend, 
+       dmap_nromov_apor, dmap_valor, dmap_vcapi, dmap_vrend,
+       tpmv_clin, tpmv_descri
+from sf_tmovi, sf_toimv, sf_tdmap, sf_ttpmv
+where movi_fond = 8293
+and movi_plan = 829301000078
+and oimv_fond = movi_fond
+and oimv_plan = movi_plan
+and oimv_nromov = movi_nromov
+and dmap_fond = oimv_fond
+and dmap_plan = oimv_plan
+and dmap_nromov = oimv_nromov
+and dmap_opin = oimv_opin
+and dmap_nromov_apor = 2449844
+and tpmv_tpmv = movi_tpmv
+order by 1,2 ;
+
+===========================================
+
+Atributo_Item('ch_error', 'i');
+
+--autoincrementable
+cspc_cspc          NUMBER(10)    GENERATED ALWAYS AS IDENTITY  
+
+==================================================================
+
+sf_qplan.seltitular(i.acdi_fond, i.acdi_plan);  --titular
+
+
+
+
+
+
+select  sf_qplan.seltitular(9193,919301051468),
+        sf_qplan.seltitular(9193,919301073195),
+        sf_qplan.seltitular(9193,919301073134),
+        sf_qplan.seltitular(9193,919301073176),
+        sf_qplan.seltitular(9193,919301073180),
+        sf_qplan.seltitular(9193,919301073138),
+        sf_qplan.seltitular(9193,919301073192),
+        sf_qplan.seltitular(9193,919301073124),
+        sf_qplan.seltitular(9193,919301073157),
+from dual;
+
+919301051468
+919301073195
+919301073134
+919301073176
+919301073180
+919301073138
+919301073192
+919301073124
+919301073157
+
+
+=================================================================
+   --SQL
+==================================================================
+  --CURSORES
+  --
+  CURSOR c_viim_dtop IS
+  SELECT dtop_viim
+  FROM SF_TDTOP, SF_TDISO, SF_TCTOP_TMP
+  WHERE dtop_diso = diso_diso
+  AND diso_sooc = ctop_sooc 
+  AND ctop_ctop = :NEW.movi_ctop
+  AND dtop_dtop = NVL(:NEW.movi_dtop,dtop_dtop)--60182
+  ;
+  Rc_viim_dtop   c_viim_dtop%ROWTYPE;
+  v_frecu      VARCHAR2(2);
+  --
+    open c_frecu;
+    fetch c_frecu into v_frecu;
+    close c_frecu;
+  
+--TYPE
+  --
+    type ge_ty_ntlg_rec is record (
+        noti    number(8),
+        descri  varchar2(100),
+        llave   varchar2(4000),
+        fechaE  varchar2(20),
+        destino varchar2(100),
+        exitoso varchar2(1),
+        detalle varchar2(4000));  
+        
+    TYPE ge_rc_ntlg IS REF CURSOR RETURN ge_ty_ntlg_rec;    
+    --
+--PROCEDIMIENTO HEAD    
+    --
+    -----------------------------------------------------------------------------------------------------------------------------
+    --  
+    -- Procedimiento para....
+    --
+    Procedure RegistraNotificaRecord_Inmob ( 
+        p_viim          in number,
+        p_proceso       in varchar2,
+        p_urlarchivo    in varchar2,
+        p_msg           out varchar2,
+        p_tras in number default null  
+     );
+    --
+    -----------------------------------------------------------------------------------------------------------------------------
+    --           
+    Procedure Obtener_hora_msjes_bienv ( p_hora out varchar2 ) is    
+    --
+    -- Procedimiento para obtener la hora parametrizada para el envío de los mensajes de bienvenida.
+    --  
+    -----------------------------------------------------------------------------------------------------------------------------
+    --         
+    --
+    cursor c_prau is 
+    select substr(replace(prau_hra_bienv, ':', ''),1, 4) from fd_tprau;
+    --
+    begin
+        --
+        open c_prau;
+        fetch c_prau into p_hora;
+        close c_prau;
+        --
+     exception
+         when sf_qerror.ex_sifi_general then
+           raise;
+         when sf_qerror.ex_procedimiento then
+           raise_application_error(sf_qerror.codigo_ex_sifi, sf_qerror.print_error);
+         when others then
+          if (sf_qerror.hace_raise(sqlcode)) then
+            raise;
+          else
+            raise_application_error(sf_qerror.codigo_ex_sifi, sf_qerror.print_error);
+          end if;    
+    end Obtener_hora_msjes_bienv;
+    --      
+--FUNCTION HEAD      
+  --
+  Function VRends_Netos_Periodo( p_Fond       integer,
+                                  p_Plan       integer,
+                                  p_fecha_Ini  date,
+                                  p_fecha_Fin  date,
+                                  p_OpIn       varchar2  default null ) return number;
+  --
+   Function Obtener_hora ( p_tpno_tpno varchar2 ) return varchar2 is          
+    --
+    -- Funcion para obtener la hora.
+    --
+    cursor c_hora is 
+    select substr(replace(tpno_hora, ':', ''),1, 4)
+    from GE_TTPNO;
+    --
+    v_hora varchar2;
+    --
+    begin
+        --
+        open c_hora;
+        fetch c_hora into v_hora;
+        close c_hora;
+        --
+        return ( v_hora );
+        --
+     exception
+         when sf_qerror.ex_sifi_general then
+           raise;
+         when sf_qerror.ex_procedimiento then
+           raise_application_error(sf_qerror.codigo_ex_sifi, sf_qerror.print_error);
+         when others then
+          if (sf_qerror.hace_raise(sqlcode)) then
+            raise;
+          else
+            raise_application_error(sf_qerror.codigo_ex_sifi, sf_qerror.print_error);
+          end if;    
+    end Obtener_hora;
+
+
+========================TYPES========================
+
+  --
+  TYPE r_Apor is record ( Aporte       integer,
+                          Fech_Apor    date,
+                          TpApo				 varchar2(2),-- soli 1108
+                          VCapi        number(20, 2),
+                          VRend        number(20, 2),
+                          VCntg        number(20, 2)
+                         );
+  --
+  TYPE t_Apor is table of r_Apor index by binary_integer;
+  --
+  t_ap  t_Apor;
+
+
+
+==============  borrar constraint===================
+
+alter table GE_TCNNT
+  drop constraint UK_GE_TCNNT_LLAVEEXTERNAUK;
+
+
